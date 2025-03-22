@@ -3,3 +3,5 @@
 
 ### 提交记录
 - 3.12 `chap1_warmup`
+- 3.22 `chap4_simple_neural_network`
+- 3.22 `chap5_CNN`
