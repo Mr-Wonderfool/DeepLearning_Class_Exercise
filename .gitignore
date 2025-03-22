@@ -172,3 +172,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# requirement in original nndl
+Requirement/
+# downloaded dataset
+data/
