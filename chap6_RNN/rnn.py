@@ -81,22 +81,22 @@ class RNN_model(nn.Module):
         ################################################
 
         # pad output again into tensor
-        output, lengths = pad_packed_sequence(output, batch_first=True) # (batch, max_seq_length, hidden_size)
+        output, lengths = pad_packed_sequence(output, batch_first=True)  # (batch, max_seq_length, hidden_size)
         mask = torch.arange(output.size(1)).expand(len(lengths), -1) < lengths.unsqueeze(1)
 
-        output = self.relu(self.fc(output)) # (batch, max_seq_length, vocab_size)
+        output = self.relu(self.fc(output))  # (batch, max_seq_length, vocab_size)
 
         # deal with padded entries
-        output = torch.where(mask.unsqueeze(-1), output, torch.tensor(float('-inf')))
+        output = torch.where(mask.unsqueeze(-1), output, torch.tensor(float("-inf")))
 
         output = output.view(-1, self.vocab_length)
 
         output = self.softmax(output)
-        
-        return output # shape (batch* max_seq_length, vocab_size)
+
+        return output  # shape (batch* max_seq_length, vocab_size)
 
     def predict(self, words):
-        """ predict the rest of the sentence given words which elongates
+        """predict the rest of the sentence given words which elongates
         :param words: ndarray with shape (seq_length, )
         """
         self.eval()
@@ -106,10 +106,8 @@ class RNN_model(nn.Module):
         h0 = torch.zeros(self.num_layers, 1, self.lstm_dim)
         c0 = torch.zeros(self.num_layers, 1, self.lstm_dim)
         output, _ = self.rnn_lstm(input, (h0, c0))
-        out = output.contiguous().view(-1, self.lstm_dim) # (seq_length, lstm_dims)
-        out = self.relu(self.fc(out)) # (seq_length, output_dims)
-        out = self.softmax(out) # (seq_length, vocab_size)
+        out = output.contiguous().view(-1, self.lstm_dim)  # (seq_length, lstm_dims)
+        out = self.relu(self.fc(out))  # (seq_length, output_dims)
+        out = self.softmax(out)  # (seq_length, vocab_size)
         # return prediction of the next vocab, shape (1, vocab_size)
         return out[-1:]
-
-        

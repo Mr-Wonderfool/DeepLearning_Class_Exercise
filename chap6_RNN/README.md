@@ -13,3 +13,4 @@
    python main.py
    ```
    同时训练好的模型记录在`data/rnn_lstm/models`中，可以直接加载权重使用。
+5. 本次项目的报告文档记录在`report.pdf`中。
